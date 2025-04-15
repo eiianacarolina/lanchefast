@@ -1,89 +1,36 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Produto</title>
-    <style>
-        body {
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+<div class="container mt-5">
+    <div class="card shadow-lg rounded border-0">
+        <div class="row g-0">
+            <div class="col-md-5 d-flex align-items-center justify-content-center bg-light">
+                @if ($produto->imagem)
+                    <img src="{{ Storage::url($produto->imagem) }}" alt="{{ $produto->nome }}" class="img-fluid rounded-start p-3" style="max-height: 350px;">
+                @else
+                    <div class="text-muted text-center p-5">
+                        <i class="bi bi-image fs-1"></i>
+                        <p class="mt-2">Sem imagem disponível</p>
+                    </div>
+                @endif
+            </div>
+            <div class="col-md-7">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">
+                        <i class="bi bi-cup-straw me-2 text-primary"></i> {{ $produto->nome }}
+                    </h2>
 
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-        }
+                    <h5 class="mb-2 text-muted">
+                        <i class="bi bi-currency-dollar me-1"></i> {{ number_format($produto->valor, 2, ',', '.') }}
+                    </h5>
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
+                    <p class="card-text mt-4">
+                        <i class="bi bi-card-text me-2"></i> <strong>Ingredientes:</strong><br>
+                        {{ $produto->ingredientes }}
+                    </p>
 
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .info-div {
-            margin-bottom: 15px;
-        }
-
-        .info-div strong {
-            color: #555;
-        }
-
-        .info-div {
-            font-size: 16px;
-            color: #333;
-        }
-
-        .info-div a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .info-div a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container mt-5">
-        <h2>Detalhes do Produto</h2>
-
-        <div class="info-div">
-            <strong>Nome:</strong> {{ $produto->nome }}
-        </div>
-        <div class="info-div">
-            <strong>Ingredientes:</strong> {{ $produto->ingredientes }}
-        </div>
-        <div class="info-div">
-            <strong>Valor:</strong> {{ $produto->valor }}
-        </div>
-        <div class="info-div">
-            <strong>Imagem:</strong> {{ $produto->imagem }}
-        </div>
-        <div>
-            <a href="{{ route('produtos.edit', $produto->id) }}" class="btn btn-primary">Editar</a>
+                    <a href="{{ route('produtos.edit', $produto->id) }}" class="btn btn-outline-primary mt-3">
+                        <i class="bi bi-pencil-square me-1"></i> Editar Produto
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
