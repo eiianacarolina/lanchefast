@@ -10,33 +10,35 @@ class ProdutoCreate extends Component
 {
     use WithFileUploads;
 
-    public $nome, $ingredientes, $valor, $imagem;
+    public $nome, $ingredientes, $valor, $novaImagem;
 
-    protected $rules = [
-        'nome' => 'required|string|max:255',
-        'ingredientes' => 'required|string',
-        'valor' => 'required|numeric|min:0',
-        'imagem' => 'nullable|image|max:1024',  // Max 1MB para a imagem
-    ];
-
-    public function salvar()
+    public function criarProduto()
     {
-        $this->validate();
+        $this->validate([
+            'nome' => 'required|max:255',
+            'ingredientes' => 'required|max:500',
+            'valor' => 'required|numeric',
+            'novaImagem' => 'nullable|image|max:10240', // 10MB max
+        ]);
 
-        $imagemPath = null;
-        if ($this->imagem) {
-            $imagemPath = $this->imagem->store('imagens', 'public');  // Salvar no diretório public/imagens
+        // Salvar a imagem, se houver
+        $imagem = null;
+        if ($this->novaImagem) {
+            $imagem = $this->novaImagem->store('produtos', 'public');
         }
 
+        // Criar o produto no banco
         Produto::create([
             'nome' => $this->nome,
             'ingredientes' => $this->ingredientes,
             'valor' => $this->valor,
-            'imagem' => $imagemPath,
+            'imagem' => $imagem,
         ]);
 
-        session()->flash('message', 'Produto criado com sucesso!');
-        return redirect()->route('produtos.index');
+        session()->flash('mensagem', 'Produto criado com sucesso!');
+        
+        // Limpar os campos
+        $this->reset(['nome', 'ingredientes', 'valor', 'novaImagem']);
     }
 
     public function render()
