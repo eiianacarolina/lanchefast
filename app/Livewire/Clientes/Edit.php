@@ -2,75 +2,48 @@
 
 namespace App\Livewire\Clientes;
 
-use App\Models\Cliente;
 use Livewire\Component;
+use App\Models\Cliente;
 
 class Edit extends Component
 {
     public $cliente;
     public $nome, $endereco, $telefone, $cpf, $email, $senha;
 
+    public function mount($cliente)
+    {
+        $this->cliente = Cliente::findOrFail($cliente);
+        $this->nome = $this->cliente->nome;
+        $this->endereco = $this->cliente->endereco;
+        $this->telefone = $this->cliente->telefone;
+        $this->cpf = $this->cliente->cpf;
+        $this->email = $this->cliente->email;
+        $this->senha = ''; // Não exibe a senha ao editar
+    }
+
     protected $rules = [
         'nome' => 'required|string|max:255',
         'endereco' => 'required|string',
         'telefone' => 'required|string',
-        'cpf' => 'required|string',
-        'email' => 'required|email|unique:clientes,email', // Ajuste a seguir
-        'senha' => 'nullable|string|min:6',
+        'cpf' => 'required|string', // Você pode adicionar validação de CPF aqui, usando um pacote externo
+        'email' => 'required|email|unique:clientes,email',
+        'senha' => 'required|string|min:6',
     ];
 
-    public function mount($cliente)
+    public function submit()
     {
-        $this->cliente = Cliente::find($cliente);
+        $this->validate();
 
-        if ($this->cliente) {
-            $this->nome = $this->cliente->nome;
-            $this->endereco = $this->cliente->endereco;
-            $this->telefone = $this->cliente->telefone;
-            $this->cpf = $this->cliente->cpf;
-            $this->email = $this->cliente->email;
-        } else {
-            session()->flash('message', 'Cliente não encontrado!');
-            return redirect()->route('clientes.index');
-        }
-    }
-
-    public function salvar()
-    {
-        // Modifique a validação do email para ignorar o próprio cliente
-        $this->validate([
-            'nome' => 'required|string|max:255',
-            'endereco' => 'required|string',
-            'telefone' => 'required|string',
-            'cpf' => 'required|string',
-            'email' => 'required|email|unique:clientes,email,' . $this->cliente->id, // Ignorar a validação de unicidade para o próprio cliente
-            'senha' => 'nullable|string|min:6',
+        $this->cliente->update([
+            'nome' => $this->nome,
+            'endereco' => $this->endereco,
+            'telefone' => $this->telefone,
+            'cpf' => $this->cpf,
+            'email' => $this->email,
+            'senha' => $this->senha ? bcrypt($this->senha) : $this->cliente->senha, // Atualiza a senha somente se fornecida
         ]);
 
-        // Atualiza o cliente no banco
-        if ($this->senha) {
-            $this->cliente->update([
-                'nome' => $this->nome,
-                'endereco' => $this->endereco,
-                'telefone' => $this->telefone,
-                'cpf' => $this->cpf,
-                'email' => $this->email,
-                'senha' => bcrypt($this->senha),
-            ]);
-        } else {
-            $this->cliente->update([
-                'nome' => $this->nome,
-                'endereco' => $this->endereco,
-                'telefone' => $this->telefone,
-                'cpf' => $this->cpf,
-                'email' => $this->email,
-            ]);
-        }
-
-        // Mensagem de sucesso
-        session()->flash('message', 'Cliente atualizado com sucesso!');
-
-        // Redireciona para a página de index
+        session()->flash('message', 'Cliente atualizado com sucesso.');
         return redirect()->route('clientes.index');
     }
 
@@ -79,3 +52,4 @@ class Edit extends Component
         return view('livewire.clientes.edit');
     }
 }
+

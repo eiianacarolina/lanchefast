@@ -1,139 +1,49 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Cliente</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+<div class="container mt-4">
+    <h2 class="mb-4">Editar Cliente: {{ $cliente->nome }}</h2>
 
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form wire:submit.prevent="submit">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" id="nome" class="form-control" wire:model="nome" placeholder="Nome completo">
+                    @error('nome') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
+                <div class="mb-3">
+                    <label for="endereco" class="form-label">Endereço</label>
+                    <input type="text" id="endereco" class="form-control" wire:model="endereco" placeholder="Endereço completo">
+                    @error('endereco') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+                <div class="mb-3">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="text" id="telefone" class="form-control" wire:model="telefone" placeholder="Telefone">
+                    @error('telefone') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
-        .form-input:focus {
-            border-color: #007bff;
-            outline: none;
-        }
+                <div class="mb-3">
+                    <label for="cpf" class="form-label">CPF</label>
+                    <input type="text" id="cpf" class="form-control" wire:model="cpf" placeholder="CPF">
+                    @error('cpf') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            width: 100%;
-        }
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" wire:model="email" placeholder="Email">
+                    @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha (Deixe em branco para não alterar)</label>
+                    <input type="password" id="senha" class="form-control" wire:model="senha" placeholder="Senha">
+                    @error('senha') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
-        .btn-secondary {
-            background-color: #6c757d;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            width: 100%;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-
-        .error-message {
-            font-size: 12px;
-            color: #e74c3c;
-        }
-
-        .space-y-4 > * + * {
-            margin-top: 1.5rem;
-        }
-
-        label {
-            font-weight: bold;
-            color: #333;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container mt-5">
-        <h2>Editar Cliente</h2>
-
-        <form wire:submit.prevent="salvar" class="space-y-4">
-            <div>
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" wire:model="nome" class="form-input">
-                @error('nome') <span class="error-message">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label for="endereco">Endereço</label>
-                <input type="text" id="endereco" wire:model="endereco" class="form-input">
-                @error('endereco') <span class="error-message">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label for="telefone">Telefone</label>
-                <input type="text" id="telefone" wire:model="telefone" class="form-input">
-                @error('telefone') <span class="error-message">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label for="cpf">CPF</label>
-                <input type="text" id="cpf" wire:model="cpf" class="form-input">
-                @error('cpf') <span class="error-message">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label for="email">Email</label>
-                <input type="email" id="email" wire:model="email" class="form-input">
-                @error('email') <span class="error-message">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label for="senha">Senha</label>
-                <input type="password" id="senha" wire:model="senha" class="form-input">
-                @error('senha') <span class="error-message">{{ $message }}</span> @enderror
-            </div>
-
-            <!-- Botão de Atualizar -->
-            <button type="submit" class="btn btn-primary">Atualizar</button>
-
-            <!-- Botão de Cancelar -->
-            <a href="{{ route('clientes.index') }}" class="btn btn-secondary mt-3">Cancelar</a>
-        </form>
+                <button type="submit" class="btn btn-warning btn-lg w-100">
+                    <i class="bi bi-pencil-square"></i> Atualizar Cliente
+                </button>
+            </form>
+        </div>
     </div>
-
-</body>
-</html>
+</div>
