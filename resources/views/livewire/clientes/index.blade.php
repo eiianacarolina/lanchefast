@@ -58,8 +58,7 @@
                                     <a href="{{ route('clientes.edit', $cliente->id) }}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <button wire:click="delete({{ $cliente->id }})" class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Tem Certeza?')">
+                                    <button wire:click="confirmDelete({{ $cliente->id }})" class="btn btn-sm btn-danger">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
@@ -73,10 +72,30 @@
                 </table>
             </div>
 
+{{-- Modal de Confirmação --}}
+@if($confirmDeleteId)
+<div class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmação de Exclusão</h5>
+                <button type="button" class="btn-close" wire:click="$set('confirmDeleteId', null)"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir este produto?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" wire:click="$set('confirmDeleteId', null)">Cancelar</button>
+                <button type="button" class="btn btn-danger" wire:click="deleteConfirmed">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
             <div class="mt-3">
                 {{ $clientes->links() }}
             </div>
-
         </div>
     </div>
 </div>

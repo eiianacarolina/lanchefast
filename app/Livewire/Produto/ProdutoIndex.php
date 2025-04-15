@@ -4,7 +4,6 @@ namespace App\Livewire\Produto;
 
 use Livewire\Component;
 use App\Models\Produto;
-use App\Models\Produtos;
 use Livewire\WithPagination;
 
 class ProdutoIndex extends Component
@@ -13,6 +12,7 @@ class ProdutoIndex extends Component
 
     public $search = '';
     public $perPage = 10;
+    public $confirmDeleteId = null; // Adicionado para controle da exclusão
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -28,9 +28,22 @@ class ProdutoIndex extends Component
         return view('livewire.produto.produto-index', compact('produtos'));
     }
 
-    public function delete($id)
+    // Quando o usuário clica no botão de deletar
+    public function confirmDelete($id)
     {
-        Produto::findOrFail($id)->delete();
-        session()->flash('message', 'Produto deletado com sucesso.');
+        $this->confirmDeleteId = $id;
+    }
+
+    // Quando o usuário confirma a exclusão
+    public function deleteConfirmed()
+    {
+        $produto = Produto::find($this->confirmDeleteId);
+
+        if ($produto) {
+            $produto->delete();
+            session()->flash('message', 'Produto deletado com sucesso.');
+        }
+
+        $this->confirmDeleteId = null;
     }
 }
