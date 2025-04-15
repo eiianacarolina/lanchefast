@@ -69,14 +69,6 @@
                                 </label>
                                 <div class="text-center">
                                     <img src="{{ $novaImagem ? $novaImagem->temporaryUrl() : Storage::url($imagem) }}" class="img-thumbnail" width="150" alt="Prévia da nova imagem">
-                                    <div class="mt-2">
-                                        @if ($imagem)
-                                            <!-- Botão para remover imagem atual -->
-                                            <button type="button" class="btn btn-outline-danger btn-sm" wire:click="removerImagem">
-                                                <i class="bi bi-trash me-1"></i> Remover Imagem
-                                            </button>
-                                        @endif
-                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -85,7 +77,7 @@
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-save me-1"></i> Salvar Alterações
                             </button>
-                            <a href="{{ route('produtos.show', $produtoId) }}" class="btn btn-outline-secondary ms-2">
+                            <a href="{{ route('produtos.index', $produtoId) }}" class="btn btn-outline-secondary ms-2">
                                 <i class="bi bi-arrow-left me-1"></i> Voltar
                             </a>
                         </div>

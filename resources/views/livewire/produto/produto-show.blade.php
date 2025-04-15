@@ -29,6 +29,9 @@
                     <a href="{{ route('produtos.edit', $produto->id) }}" class="btn btn-outline-primary mt-3">
                         <i class="bi bi-pencil-square me-1"></i> Editar Produto
                     </a>
+                    <a href="{{ route('produtos.index', $produto->id) }}" class="btn btn-outline-secondary mt-3">
+                        <i class="bi bi-arrow-left me-1"></i> Voltar
+                    </a>
                 </div>
             </div>
         </div>
