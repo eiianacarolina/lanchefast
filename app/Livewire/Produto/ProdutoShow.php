@@ -2,24 +2,16 @@
 
 namespace App\Livewire\Produto;
 
-use App\Models\Produto;
 use Livewire\Component;
+use App\Models\Produto;
 
 class ProdutoShow extends Component
 {
     public $produto;
 
-    // Método mount para carregar o produto
-    public function mount($produto)
+    public function mount(Produto $produto)
     {
-        // Tenta encontrar o produto pelo ID
-        $this->produto = Produto::find($produto);
-
-        // Caso o produto não seja encontrado
-        if (!$this->produto) {
-            session()->flash('message', 'Produto não encontrado!');
-            return redirect()->route('produtos.index');
-        }
+        $this->produto = $produto;
     }
 
     public function render()
@@ -27,3 +19,4 @@ class ProdutoShow extends Component
         return view('livewire.produto.produto-show');
     }
 }
+
