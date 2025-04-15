@@ -4,6 +4,7 @@ namespace App\Livewire\Produto;
 
 use App\Models\Produto;
 use Livewire\Component;
+use App\Models\Produto;
 
 class ProdutoShow extends Component
 {
@@ -19,3 +20,4 @@ class ProdutoShow extends Component
         return view('livewire.produto.produto-show');
     }
 }
+

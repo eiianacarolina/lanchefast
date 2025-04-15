@@ -4,9 +4,9 @@ namespace App\Livewire\Produto;
 
 use App\Models\Produto;
 use Livewire\Component;
-use Livewire\Features\SupportFileUploads\WithFileUploads;
 
-class ProdutoEdit extends Component
+
+    class ProdutoEdit extends Component
 {
     use WithFileUploads;
 
