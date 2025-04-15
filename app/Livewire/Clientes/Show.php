@@ -11,12 +11,7 @@ class Show extends Component
 
     public function mount($cliente)
     {
-        $this->cliente = Cliente::find($cliente);
-
-        if (!$this->cliente) {
-            session()->flash('message', 'Cliente não encontrado!');
-            return redirect()->route('clientes.index');
-        }
+        $this->cliente = Cliente::findOrFail($cliente);
     }
 
     public function render()
