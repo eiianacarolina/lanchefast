@@ -27,7 +27,7 @@ Route::prefix('produtos')->group(function () {
 });
 
 Route::prefix('funcionarios')->group(function () {
-    Route::get('/', FuncionarioIndex::class)->name('funcionario.index');
+    Route::get('/', FuncionarioIndex::class)->name('funcionarios.index');
     Route::get('/create', FuncionarioCreate::class)->name('funcionarios.create');
     Route::get('/{funcionario}', FuncionarioShow::class)->name('funcionarios.show');
     Route::get('/{funcionario}/edit', FuncionarioEdit::class)->name('funcionarios.edit');
