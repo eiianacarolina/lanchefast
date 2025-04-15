@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Produto;
 
+use App\Models\Produto;
 use Livewire\Component;
 use App\Models\Produto;
 

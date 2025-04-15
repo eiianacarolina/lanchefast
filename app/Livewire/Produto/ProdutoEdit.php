@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Produto;
 
-use Livewire\Component;
-use Livewire\WithFileUploads;
 use App\Models\Produto;
+use Livewire\Component;
+
 
     class ProdutoEdit extends Component
 {

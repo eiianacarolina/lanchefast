@@ -1,78 +1,86 @@
-<div class="container mt-4">
-    <div class="row mb-5">
-
-
-        <!-- Mensagem de sucesso -->
-        @if (session()->has('message'))
-            <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-2 rounded mb-4">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        <form wire:submit.prevent="salvar" class="bg-white shadow-md rounded-lg p-6 space-y-4">
-
-            <!-- Nome -->
-            <div class="card ">
-                <div class="card-header"style="background-color: black; color: white">
-                    <h3 class="text-2xl font-bold mb-6 text-gray-800 text-center" >Criar Novo Produto</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <label for="nome" class="block text-sm font-semibold text-gray-700"><b>Nome do
-                                        Produto</b></label>
-                                <input type="text" id="nome" wire:model.defer="nome"
-                                    class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                                @error('nome')
-                                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <!-- Ingredientes -->
-                            <div class="mb-4">
-                                <label for="ingredientes"
-                                    class="block text-sm font-semibold text-gray-700"><b>Ingredientes</b></label>
-                                <input type="text" id="ingredientes" wire:model.defer="ingredientes"
-                                    class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                                @error('ingredientes')
-                                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <!-- Valor -->
-                            <div class="mb-4">
-                                <label for="valor" class="block text-sm font-semibold text-gray-700"><b>Valor
-                                        (R$)</b></label>
-                                <input type="number" id="valor" wire:model.defer="valor" step="0.01"
-                                    class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                                @error('valor')
-                                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <!-- Imagem -->
-                            <div class="mb-4">
-                                <label for="imagem" class="block text-sm font-semibold text-gray-700"><b>Imagem
-                                        (opcional)</b></label>
-                                <input type="file" id="imagem" wire:model="imagem"
-                                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                                @error('imagem')
-                                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <!-- Botão -->
-
-                            <button type="submit" class="btn btn-dark">
-                                Salvar Produto
-                            </button>
-
-                        </div>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded">
+        <div class="row g-0">
+            <div class="col-md-5 d-flex align-items-center justify-content-center bg-light">
+                @if ($novaImagem)
+                    <!-- Mostrar o preview da nova imagem -->
+                    <img src="{{ $novaImagem->temporaryUrl() }}" class="img-fluid rounded-start p-3" style="max-height: 350px; opacity: 0.8; transition: opacity 0.3s ease-in-out;">
+                @else
+                    <div class="text-muted text-center p-5">
+                        <i class="bi bi-image fs-1"></i>
+                        <p class="mt-2">Nenhuma imagem selecionada</p>
                     </div>
+                @endif
+            </div>
 
+            <div class="col-md-7">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-4 d-flex align-items-center">
+                        <i class="bi bi-plus-circle text-primary me-2"></i> Criar Novo Produto
+                    </h2>
+
+                    @if (session()->has('mensagem'))
+                        <div class="alert alert-success d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            {{ session('mensagem') }}
+                        </div>
+                    @endif
+
+                    <form wire:submit.prevent="criarProduto" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-tag"></i> Nome
+                            </label>
+                            <input type="text" class="form-control" wire:model="nome" placeholder="Digite o nome do produto">
+                            @error('nome') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-card-text"></i> Ingredientes
+                            </label>
+                            <textarea class="form-control" rows="3" wire:model="ingredientes" placeholder="Descreva os ingredientes"></textarea>
+                            @error('ingredientes') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-currency-dollar"></i> Valor
+                            </label>
+                            <input type="number" class="form-control" wire:model="valor" step="0.01" placeholder="Digite o valor">
+                            @error('valor') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-upload"></i> Imagem (opcional)
+                            </label>
+                            <input type="file" class="form-control" wire:model="novaImagem">
+                            @error('novaImagem') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+
+                        @if ($novaImagem)
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="bi bi-image-fill"></i> Pré-visualização da Imagem
+                                </label>
+                                <div class="text-center">
+                                    <img src="{{ $novaImagem->temporaryUrl() }}" class="img-thumbnail" width="150" alt="Prévia da imagem">
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-plus-circle me-1"></i> Criar Produto
+                            </button>
+                            <a href="{{ route('produtos.index') }}" class="btn btn-outline-secondary ms-2">
+                                <i class="bi bi-arrow-left me-1"></i> Voltar
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
